@@ -57,7 +57,7 @@ def main():
             else:
                 sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
 
-            if sinais:
+            if not sinais:
                 sinais_mat = sinais['val']
 
                 # Extraindo o Batimento Cardiaco do Paciente
