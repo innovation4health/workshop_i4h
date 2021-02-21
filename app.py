@@ -67,7 +67,7 @@ def main():
 
             # Fazendo a previsao
             # Carregamos o modelo   
-            modelo = load_model('../modelo/ResNet_30s_34lay_16conv.hdf5')
+            modelo = load_model('fe_heart_sensor/model/ResNet_30s_34lay_16conv.hdf5')
 
             # Valores constantes
             frequencia = 300
