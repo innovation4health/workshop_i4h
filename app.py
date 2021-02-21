@@ -44,76 +44,79 @@ def main():
     if choice == "Risco Cardiaco":
         sub_activities = ["Predict"]
         sub_choice = st.sidebar.selectbox("Action", sub_activities)
+        
 
         if sub_choice == "Predict":    
 
             # Extrai o conteúdo do arquivo
             uploaded_file = False
-
-            uploaded_file = st.file_uploader("Choose a MAT file", type="mat")
-
             #sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
 
-            if uploaded_file:
-                sinais = loadmat(uploaded_file)
+            if st.checkbox('Want to upload data to predict?'):
+                uploaded_file = st.file_uploader("Choose a MAT file", type="mat")
 
-                sinais_mat = sinais['val']
+            if st.button('Make predictions'):
 
-                # Extraindo o Batimento Cardiaco do Paciente
-                for channelid, channel in enumerate(sinais_mat):
-                    resultado = ecg.ecg(signal = channel, sampling_rate = 300, show = False)
-                    heart_rate = np.zeros_like(channel, dtype = 'float')
-                    heart_rate = resultado['heart_rate']    
-                    
-                    st.write('BPM máximo: ', max(heart_rate))  
-                    
-                    try:
-                        if max(heart_rate) > 130:
-                            HR = 1
-                        else:
-                            HR = 0
-                    except:
-                        continue    
+                if uploaded_file:
+                    sinais = loadmat(uploaded_file)
 
-                # Fazendo a previsao
-                # Carregamos o modelo   
-                modelo = load_model('fe_heart_sensor/model/ResNet_30s_34lay_16conv.hdf5')
+                    sinais_mat = sinais['val']
 
-                # Valores constantes
-                frequencia = 300
-                tamanho_janela = 30 * frequencia
+                    # Extraindo o Batimento Cardiaco do Paciente
+                    for channelid, channel in enumerate(sinais_mat):
+                        resultado = ecg.ecg(signal = channel, sampling_rate = 300, show = False)
+                        heart_rate = np.zeros_like(channel, dtype = 'float')
+                        heart_rate = resultado['heart_rate']    
+                        
+                        st.write('BPM máximo: ', max(heart_rate))  
+                        
+                        try:
+                            if max(heart_rate) > 130:
+                                HR = 1
+                            else:
+                                HR = 0
+                        except:
+                            continue    
 
-                # Fazendo a previsao
-                x = processamento(sinais_mat, tamanho_janela)
+                    # Fazendo a previsao
+                    # Carregamos o modelo   
+                    modelo = load_model('fe_heart_sensor/model/ResNet_30s_34lay_16conv.hdf5')
 
-                # Previsões com o modelo (retorna as probabilidades)
-                prob_x, ann_x = previsoes(modelo, x)
+                    # Valores constantes
+                    frequencia = 300
+                    tamanho_janela = 30 * frequencia
 
-                # Lista de classes
-                #classes = ['A', 'N', 'O', '~']
+                    # Fazendo a previsao
+                    x = processamento(sinais_mat, tamanho_janela)
 
-                x = processamento(sinais_mat, tamanho_janela)
-                prob_x, ann_x = previsoes(modelo, x)
-                st.write('Probabilidade FA: ', prob_x[0, 0])
+                    # Previsões com o modelo (retorna as probabilidades)
+                    prob_x, ann_x = previsoes(modelo, x)
 
-                # Dataframe para o risco estratificado
-                df_risco = pd.DataFrame({'Probabilidade':[prob_x[0, 0]], 'HR':HR})
-                df_risco['Risco'] = df_risco.apply(classifica_risco, axis = 1)
-                st.write('Risco: ', df_risco['Risco'][0])
+                    # Lista de classes
+                    #classes = ['A', 'N', 'O', '~']
 
-                # Plot
-                x_axis = np.linspace(0., float(len(sinais_mat[0]) / 300), num = len(sinais_mat[0]))
-                plt.rcParams.update({'font.size': 14})
-                fig, ax = plt.subplots(figsize = (16,5))
+                    x = processamento(sinais_mat, tamanho_janela)
+                    prob_x, ann_x = previsoes(modelo, x)
+                    st.write('Probabilidade FA: ', prob_x[0, 0])
 
-                ax.plot(x_axis, sinais_mat[0], 'magenta')
-                ax.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
+                    # Dataframe para o risco estratificado
+                    df_risco = pd.DataFrame({'Probabilidade':[prob_x[0, 0]], 'HR':HR})
+                    df_risco['Risco'] = df_risco.apply(classifica_risco, axis = 1)
+                    st.write('Risco: ', df_risco['Risco'][0])
 
-                ax.set_title('ECG Paciente')
-                ax.set_xlabel("Tempo (em segundos)")
-                ax.set_ylabel("Milli Volts")
+                    # Plot
+                    x_axis = np.linspace(0., float(len(sinais_mat[0]) / 300), num = len(sinais_mat[0]))
+                    plt.rcParams.update({'font.size': 14})
+                    fig, ax = plt.subplots(figsize = (16,5))
 
-                st.write(fig)
+                    ax.plot(x_axis, sinais_mat[0], 'magenta')
+                    ax.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
+
+                    ax.set_title('ECG Paciente')
+                    ax.set_xlabel("Tempo (em segundos)")
+                    ax.set_ylabel("Milli Volts")
+
+                    st.write(fig)
     
     if choice == 'Sobre':
         st.markdown("### Who I am")
