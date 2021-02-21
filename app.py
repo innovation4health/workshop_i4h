@@ -100,7 +100,7 @@ def main():
 
             ax.plot(x_axis, sinais_mat[0], 'magenta')
             ax.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
-            ax.title('ECG Paciente Teste')
+            #ax.title('ECG Paciente Teste')
             ax.ylabel('Milli Volts')
             ax.xlabel('Tempo (em segundos)')
             ax.tight_layout()
