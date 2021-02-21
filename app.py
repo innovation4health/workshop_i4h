@@ -11,6 +11,8 @@ import keras
 import json
 import nibabel as nib
 import tensorflow as tf
+import matplotlib.pyplot as plt
+
 
 from functions.utils import *
 
@@ -94,15 +96,15 @@ def main():
             # Plot
             x_axis = np.linspace(0., float(len(sinais_mat[0]) / 300), num = len(sinais_mat[0]))
             plt.rcParams.update({'font.size': 14})
-            plt.figure(figsize = (16,5))
-            plt.plot(x_axis, sinais_mat[0], 'magenta')
-            plt.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
-            plt.title('ECG Paciente Teste')
-            plt.ylabel('Milli Volts')
-            plt.xlabel('Tempo (em segundos)')
-            plt.tight_layout()
-            plt.show()
-            st.write(plt)
+            fig = plt.figure(figsize = (16,5))
+            fig.plot(x_axis, sinais_mat[0], 'magenta')
+            fig.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
+            fig.title('ECG Paciente Teste')
+            fig.ylabel('Milli Volts')
+            fig.xlabel('Tempo (em segundos)')
+            fig.tight_layout()
+            fig.show()
+            st.write(fig)
     
     if choice == 'Sobre':
         st.markdown("### Who I am")
