@@ -13,12 +13,12 @@ import nibabel as nib
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
-
 from functions.utils import *
+
+# teste
 
 from tensorflow.keras import backend as K 
 import base64
-
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
