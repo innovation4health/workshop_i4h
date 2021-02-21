@@ -52,12 +52,11 @@ def main():
 
             uploaded_file = st.file_uploader("Choose a MAT file", type="mat")
 
+            #sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
+
             if uploaded_file:
                 sinais = loadmat(uploaded_file)
-            else:
-                sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
 
-            if not sinais:
                 sinais_mat = sinais['val']
 
                 # Extraindo o Batimento Cardiaco do Paciente
