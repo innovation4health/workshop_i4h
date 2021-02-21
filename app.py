@@ -13,7 +13,6 @@ import nibabel as nib
 import tensorflow as tf
 
 from functions.utils import *
-from functions.image_classification import *
 
 from tensorflow.keras import backend as K 
 import base64
