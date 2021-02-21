@@ -102,6 +102,7 @@ def main():
             plt.xlabel('Tempo (em segundos)')
             plt.tight_layout()
             plt.show()
+            st.write(plt)
     
     if choice == 'Sobre':
         st.markdown("### Who I am")
