@@ -123,7 +123,7 @@ def main():
         st.write(" - Olá pessoal! Estamos aqui para compartilhar conhecimento e aprender com vocês!")
         
         if st.button("website"):
-            js = "window.open('https://www.linkedin.com/in/rodrigolima82/')"
+            js = "window.open('https://www.linkedin.com/company/i4h')"
             html = '<img src onerror="{}">'.format(js)
             div = Div(text=html)
             st.bokeh_chart(div)      
