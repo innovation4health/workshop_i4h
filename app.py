@@ -48,6 +48,14 @@ def main():
         if sub_choice == "Predict":    
 
             # Extrai o conteúdo do arquivo
+            filename = st.text_input('Enter a file path:')
+            try:
+                with open(filename) as input:
+                    st.text(input.read())
+            except FileNotFoundError:
+                st.error('File not found.')
+
+
             sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
             sinais_mat = sinais['val']
 
