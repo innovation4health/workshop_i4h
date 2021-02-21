@@ -120,7 +120,7 @@ def main():
     
     if choice == 'Sobre':
         st.markdown("### Who I am")
-        st.write(" - Hello Folks! I am your Doctor Health and my goal is to offer the best experience for you.")
+        st.write(" - Olá pessoal! Estamos aqui para compartilhar conhecimento e aprender com vocês!")
         
         if st.button("website"):
             js = "window.open('https://www.linkedin.com/in/rodrigolima82/')"
