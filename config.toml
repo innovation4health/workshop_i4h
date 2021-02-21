@@ -1,0 +1,6 @@
+[server]
+
+headless = true
+port = 80
+enableCORS = false
+folderWatchBlacklist = ['']

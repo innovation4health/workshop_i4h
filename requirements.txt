@@ -1,0 +1,17 @@
+matplotlib
+scipy
+pandas
+numpy
+Pillow
+keras
+scikit_learn
+opencv-python
+tensorflow
+h5py < 3.0.0
+streamlit
+imageio
+nibabel
+bokeh
+joblib
+category-encoders
+biosppy
