@@ -96,14 +96,15 @@ def main():
             # Plot
             x_axis = np.linspace(0., float(len(sinais_mat[0]) / 300), num = len(sinais_mat[0]))
             plt.rcParams.update({'font.size': 14})
-            fig = plt.figure(figsize = (16,5))
-            fig.plot(x_axis, sinais_mat[0], 'magenta')
-            fig.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
-            fig.title('ECG Paciente Teste')
-            fig.ylabel('Milli Volts')
-            fig.xlabel('Tempo (em segundos)')
-            fig.tight_layout()
-            fig.show()
+            fig, ax = plt.figure(figsize = (16,5))
+
+            ax.plot(x_axis, sinais_mat[0], 'magenta')
+            ax.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
+            ax.title('ECG Paciente Teste')
+            ax.ylabel('Milli Volts')
+            ax.xlabel('Tempo (em segundos)')
+            ax.tight_layout()
+
             st.write(fig)
     
     if choice == 'Sobre':
