@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 from functions.utils import *
 
-# teste
+#teste
 
 from tensorflow.keras import backend as K 
 import base64
