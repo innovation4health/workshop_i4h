@@ -12,11 +12,7 @@ import json
 import nibabel as nib
 import tensorflow as tf
 import matplotlib.pyplot as plt
-
 from functions.utils import *
-
-#teste
-
 from tensorflow.keras import backend as K 
 import base64
 
@@ -26,36 +22,34 @@ def main():
 
     st.write('<style>div.Widget.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-    activities = ["Home", "Risco Cardiaco", "Sobre"]
+    activities = ["Home", "Risco Cardíaco", "Sobre I4H"]
     choice = st.sidebar.selectbox("Menu", activities)
 
     # ============================== HOME ======================================================= #
     if choice == "Home":
 
-        st.header("Olá a todos! \nMuito obrigado pela sua participação neste evento.\n")
-        st.subheader("Features")
-        st.write("- Prevendo Risco Cardíaco com IoT")
+        st.header("Olá a todos!")
+        st.subheader("Muito obrigado pela sua participação neste evento.")
+        st.write("Este aplicativo irá calcular o % de risco do paciente ter uma Fibrilação Atrial (Arritmia Cardíaca) com base em seu histórico de sinais ECG. ")
+        st.write("\n\n\n")
         
-        image = PIL.Image.open("images/doctor-robot.png")
-        #st.image(image,caption="")
-
+        image = PIL.Image.open("images/I4H.png")
+        st.image(image,caption="")
 
     # ============================== RISCO CARDIACO ======================================================= #
-    if choice == "Risco Cardiaco":
-        sub_activities = ["Predict"]
+    if choice == "Risco Cardíaco":
+        sub_activities = ["Previsão"]
         sub_choice = st.sidebar.selectbox("Action", sub_activities)
         
-
-        if sub_choice == "Predict":    
+        if sub_choice == "Previsão":    
 
             # Extrai o conteúdo do arquivo
             uploaded_file = False
-            #sinais = loadmat('fe_heart_sensor/dados/paciente_rodrigo.mat')
 
-            if st.checkbox('Want to upload data to predict?'):
-                uploaded_file = st.file_uploader("Choose a MAT file", type="mat")
+            if st.checkbox('Você quer fazer o upload dos dados para previsão?'):
+                uploaded_file = st.file_uploader("Escolha um arquivo .MAT", type="mat")
 
-            if st.button('Make predictions'):
+            if st.button('Processar'):
 
                 if uploaded_file:
                     sinais = loadmat(uploaded_file)
@@ -68,7 +62,7 @@ def main():
                         heart_rate = np.zeros_like(channel, dtype = 'float')
                         heart_rate = resultado['heart_rate']    
                         
-                        st.write('BPM máximo: ', max(heart_rate))  
+                        st.write('BPM máximo: ', max(heart_rate).round(0))
                         
                         try:
                             if max(heart_rate) > 130:
@@ -78,7 +72,6 @@ def main():
                         except:
                             continue    
 
-                    # Fazendo a previsao
                     # Carregamos o modelo   
                     modelo = load_model('fe_heart_sensor/model/ResNet_30s_34lay_16conv.hdf5')
 
@@ -92,12 +85,10 @@ def main():
                     # Previsões com o modelo (retorna as probabilidades)
                     prob_x, ann_x = previsoes(modelo, x)
 
-                    # Lista de classes
-                    #classes = ['A', 'N', 'O', '~']
-
+                    # Realizando as previsoes
                     x = processamento(sinais_mat, tamanho_janela)
                     prob_x, ann_x = previsoes(modelo, x)
-                    st.write('Probabilidade FA: ', prob_x[0, 0])
+                    st.write('Probabilidade FA (%): ', (prob_x[0, 0] * 100).round(2))
 
                     # Dataframe para o risco estratificado
                     df_risco = pd.DataFrame({'Probabilidade':[prob_x[0, 0]], 'HR':HR})
@@ -109,7 +100,7 @@ def main():
                     plt.rcParams.update({'font.size': 14})
                     fig, ax = plt.subplots(figsize = (16,5))
 
-                    ax.plot(x_axis, sinais_mat[0], 'magenta')
+                    ax.plot(x_axis, sinais_mat[0], 'blue')
                     ax.axis([0, len(sinais_mat[0]) / 300, -2200, 2200])
 
                     ax.set_title('ECG Paciente')
@@ -118,15 +109,11 @@ def main():
 
                     st.write(fig)
     
-    if choice == 'Sobre':
-        st.markdown("### Who I am")
-        st.write(" - Olá pessoal! Estamos aqui para compartilhar conhecimento e aprender com vocês!")
+    if choice == 'Sobre I4H':
+        st.markdown('<style>body .fullScreenFrame > div { display: flex; justify-content: center; }</style>', unsafe_allow_html=True)
         
-        if st.button("website"):
-            js = "window.open('https://www.linkedin.com/company/i4h')"
-            html = '<img src onerror="{}">'.format(js)
-            div = Div(text=html)
-            st.bokeh_chart(div)      
+        image2 = PIL.Image.open("images/quem_somos.png")
+        st.image(image2, caption="", width=700)
 
 if __name__ == '__main__':
     main()
