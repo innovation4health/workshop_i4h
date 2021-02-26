@@ -28,7 +28,7 @@ def main():
     # ============================== HOME ======================================================= #
     if choice == "Home":
 
-        st.header("Olá a todos!")
+        st.header("Olá a todos! Olá Nelio e Luis")
         st.subheader("Muito obrigado pela sua participação neste evento.")
         st.write("Este aplicativo irá calcular o % de risco do paciente ter uma Fibrilação Atrial (Arritmia Cardíaca) com base em seu histórico de sinais ECG. ")
         st.write("\n\n\n")
